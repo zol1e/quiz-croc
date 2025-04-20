@@ -1,38 +1,62 @@
 import {
+  Link,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
+  useNavigation,
 } from "@remix-run/react";
-import type { LinksFunction } from "@remix-run/node";
 
-import "./tailwind.css";
+import type { LinksFunction } from "@remix-run/node";
+import crocCss from "~/croc.css?url";
 
 export const links: LinksFunction = () => [
-  { rel: "preconnect", href: "https://fonts.googleapis.com" },
-  {
-    rel: "preconnect",
-    href: "https://fonts.gstatic.com",
-    crossOrigin: "anonymous",
-  },
-  {
-    rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
-  },
+  { rel: "stylesheet", href: crocCss }
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const navigation = useNavigation();
   return (
     <html lang="en">
       <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
         <Meta />
         <Links />
       </head>
       <body>
-        {children}
+        <div className="container">
+          <Link to={"/"}>
+            <img src="/krok1.gif" alt="Remix" className="croc"/>
+          </Link>
+
+          <div style={{ position: "relative" }}>
+          {children}
+
+          {navigation.state !== "idle" && (
+            <div
+              style={{
+                position: "fixed",
+                top: 0, left: 0, right: 0, bottom: 0,
+                backgroundColor: "rgba(255, 255, 255, 0.05)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "1.8rem",
+                fontWeight: "bold",
+                color: "#000",
+                textShadow: "0 0 2px rgba(255, 255, 255, 0.8)",
+                zIndex: 9999,
+                pointerEvents: "auto",
+                animation: "fadeIn 1s ease-in-out forwards, bounce 1s ease-in-out infinite"
+              }}
+            >
+              Creating game...
+            </div>
+          )}
+        </div>
+        </div>
         <ScrollRestoration />
         <Scripts />
       </body>

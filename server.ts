@@ -1,7 +1,10 @@
 import { createRequestHandler } from "@remix-run/express";
+import { WebSocketExpress, Router } from 'websocket-express';
 import compression from "compression";
 import express from "express";
 import morgan from "morgan";
+import { GameWebSocketEndpoint } from "~/.server/game-ws.js";
+
 
 const viteDevServer =
   process.env.NODE_ENV === "production"
@@ -18,7 +21,7 @@ const remixHandler = createRequestHandler({
     : await import("./build/server/index.js"),
 });
 
-const app = express();
+const app = new WebSocketExpress();
 
 app.use(compression());
 
@@ -41,6 +44,10 @@ if (viteDevServer) {
 app.use(express.static("build/client", { maxAge: "1h" }));
 
 app.use(morgan("tiny"));
+
+const router = new Router();
+const gameWsEndpoint = new GameWebSocketEndpoint(router);
+app.use(gameWsEndpoint.router);
 
 // handle SSR requests
 app.all("*", remixHandler);
