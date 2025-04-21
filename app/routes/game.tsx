@@ -16,7 +16,8 @@ import Countdown from "~/components/countdown";
 import Scoreboard from "~/components/scoreboard";
 
 
-const questionGenerator = new QuestionGenerator("");
+const apiKey = process.env.REMIX_API_KEY ?? (() => { throw new Error("Missing REMIX_API_KEY"); })();
+const questionGenerator = new QuestionGenerator(apiKey);
 
 
 export type LoaderData = {
