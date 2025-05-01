@@ -13,9 +13,16 @@ export default function Scoreboard({ gameEvent }: { gameEvent: GameEvent | null}
             </thead>
             <tbody id="tbl-score-body">
             { gameEvent?.score &&
-            (Object.entries(gameEvent?.score).toReversed().map(([playerId, score], index) => (
-            <tr key={index}><td>{playerId}</td><td>{score}</td></tr>
-            )))
+                (
+                    Object.entries(gameEvent?.score || {})
+                    .sort(([, scoreA], [, scoreB]) => scoreB - scoreA)
+                    .map(([playerId, score], index) => (
+                        <tr key={index}>
+                            <td>{playerId}</td>
+                            <td>{score}</td>
+                        </tr>
+                    ))
+                )
             }
             </tbody>
         </table>

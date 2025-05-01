@@ -1,29 +1,23 @@
-import { GameState, Question } from "./model";
+import { Question } from "./question";
+
+
+export enum GameState {
+  PREPARE = "PREPARE",
+  QUESTION = "QUESTION",
+  BETWEEN_QUESTIONS = "BETWEEN_QUESTIONS",
+  FINISH = "FINISH"
+}
 
 
 export class GameEvent {
 
-  gameId: string;
-  gameState: GameState;
-  topic: string;
-  currentQuestion: Question | null;
-  lastQuestion: Question | null;
-  score: { [key: string]: number; };
-
   constructor(
-    gameId: string,
-    gameState: GameState,
-    topic: string, 
-    currentQuestion: Question | null,
-    lastQuestion: Question | null,
-    score: { [key: string]: number; }
-  ) {
-    this.gameId = gameId;
-    this.gameState = gameState;
-    this.topic = topic;
-    this.currentQuestion = currentQuestion;
-    this.lastQuestion = lastQuestion;
-    this.score = score;
-  }
+    public gameId: string,
+    public gameState: GameState,
+    public topic: string,
+    public currentQuestion: Question | null,
+    public lastQuestion: Question | null,
+    public score: { [key: string]: number }
+  ) {}
 
 }

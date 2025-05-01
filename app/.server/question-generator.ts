@@ -1,6 +1,5 @@
 import { GenerateContentParameters, GoogleGenAI, Type } from "@google/genai";
-
-import { Question } from "../common/model";
+import { Question } from "~/common/question";
 
 
 export type GeneratedQuiz = {
@@ -36,6 +35,7 @@ export class QuestionGenerator {
         const prompt = [
             "Give two questions, which answer is a positive integer",
             " and three questions, which has 4 alternatives and only the one of them is the correct answer.",
+            " The alternative answer questions should not contain answers, which answer is a positive integer.",
             " So give 3 wrong answers and the correct answer.",
             " The topic of the questions should be:",
             topic,
@@ -106,8 +106,8 @@ export class QuestionGenerator {
                             },
                             sourceUrl: {
                                 type: Type.STRING,
-                                description: "The answer is based on this internet page url",
-                                nullable: false,
+                                description: "The answer is based on this internet page url. Only if valid source url exists.",
+                                nullable: true,
                             },
                         },
                         required: ['text', 'correctAnswer', 'alternativeAnswers', 'sourceUrl'],

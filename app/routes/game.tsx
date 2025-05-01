@@ -8,12 +8,13 @@ import { getSession } from "~/sessions";
 
 import { Games } from "~/.server/games";
 import { QuestionGenerator } from "~/.server/question-generator";
-import { GameMessage, GameMessageType, GameState } from "~/common/model";
 
 import AnswerInput from "~/components/answer-input";
 import AnswerList from "~/components/answer-list";
 import Countdown from "~/components/countdown";
 import Scoreboard from "~/components/scoreboard";
+import { GameMessage, GameMessageType } from "~/common/game-message";
+import { GameState } from "~/common/game-event";
 
 
 const apiKey = process.env.REMIX_API_KEY ?? (() => { throw new Error("Missing REMIX_API_KEY"); })();

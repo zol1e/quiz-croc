@@ -1,5 +1,4 @@
-import { GameState } from "~/common/model";
-import { GameEvent } from "~/common/game-event";
+import { GameEvent, GameState } from "~/common/game-event";
 
 
 type AnswerListProps = {

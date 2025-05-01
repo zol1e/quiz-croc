@@ -24,7 +24,7 @@ export async function action({ request, }: ActionFunctionArgs) {
     session.unset("playerId");
     session.unset("topic");
 
-    const errors = {};
+    const errors: Record<string, string> = {};
 
     const formAction = body.get("formAction");
     session.set("create", (formAction === "create") ? true : false);
@@ -77,7 +77,7 @@ export default function Index() {
       value={playerId}
       onChange={(e) => {
         setPlayerId(e.target.value);
-        if (actionData?.errors) actionData.errors.playerId = null;
+        if (actionData?.errors) delete actionData.errors.playerId;
       }}
       style={{
         border: (actionData?.errors?.playerId && !playerId) ? '1px solid red' : '1px solid #ccc',
@@ -93,7 +93,7 @@ export default function Index() {
       value={topic}
       onChange={(e) => {
         setTopic(e.target.value);
-        if (actionData?.errors) actionData.errors.topic = null;
+        if (actionData?.errors) delete actionData.errors.topic;
       }}
       style={{
         border: (actionData?.errors?.topic && !topic) ? '1px solid red' : '1px solid #ccc',
@@ -109,7 +109,7 @@ export default function Index() {
       value={gameId}
       onChange={(e) => {
         setGameId(e.target.value);
-        if (actionData?.errors) actionData.errors.gameId = null;
+        if (actionData?.errors) delete actionData.errors.gameId;
       }}
       style={{
         border: (actionData?.errors?.gameId && !gameId) ? '1px solid red' : '1px solid #ccc',

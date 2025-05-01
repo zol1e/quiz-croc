@@ -1,8 +1,8 @@
 import * as crypto from "node:crypto";
-import { Question } from "../common/model";
 import { Game } from "./game";
 import { GameEventListener } from "./game-event-listener";
 import { SetTimeoutTimeScheduler, TimeScheduler } from "./time-scheduler";
+import { Question } from "~/common/question";
 
 
 // TRICK to reach server side singleton from client code:

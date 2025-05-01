@@ -1,8 +1,8 @@
-import { Question, GameState } from "../common/model";
-import { GameEvent } from "~/common/game-event";
+import { GameEvent, GameState } from "~/common/game-event";
 import { GameEventListener } from "./game-event-listener";
 import { Player } from "./player";
 import { TimeScheduler } from "./time-scheduler";
+import { Question } from "~/common/question";
 
 
 export class Game {
@@ -14,7 +14,7 @@ export class Game {
 	currentQuestion: Question | null = null;
 	usedQuestions: Question[] = [];
 	eventListenersByPlayerId: { [key: string]: Player; } = {};
-	score: { [key: string]: number; } = {};
+	score: Record<string, number> = {};
 	timeSchduler: TimeScheduler;
 
 	constructor(id: string, topic: string, questions: Question[], timeScheduler: TimeScheduler) {
@@ -129,18 +129,15 @@ export class Game {
 		return !this.usedQuestions.length ? null : this.usedQuestions[this.usedQuestions.length - 1];
 	}
 
-	computeScore(): { [key: string]: number; } {
-		this.score = {};
-		for (const playerId of this.getPlayerIds()) {
-			this.score[playerId] = 0
-		}
+	computeScore(): Record<string, number> {
+		this.score = Object.fromEntries(this.getPlayerIds().map(playerId => [playerId, 0]));
 		for (const question of this.usedQuestions) {
-			if (question !== this.currentQuestion) {
-				const score = question.getScore();
-				for (const playerId in this.score) {
-					if (playerId in score) {
-						this.score[playerId] += score[playerId];
-					}
+			if (question === this.currentQuestion) continue;
+
+			const questionScore = question.getScore();
+			for (const playerId in this.score) {
+				if (playerId in questionScore) {
+					this.score[playerId] += questionScore[playerId];
 				}
 			}
 		}

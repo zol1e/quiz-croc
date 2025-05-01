@@ -1,6 +1,6 @@
-import { GameMessage, GameMessageType } from "../common/model.js";
-import { GameEventListener } from "./game-event-listener.js";
-import { Games } from "./games.js";
+import { GameMessage, GameMessageType } from "~/common/game-message";
+import { GameEventListener } from "./game-event-listener";
+import { Games } from "./games";
 
 
 export class GameMessageHandler {
@@ -19,8 +19,8 @@ export class GameMessageHandler {
 				Games.get().answer(
 					gameMessage.playerId, 
 					gameMessage.gameId, 
-					gameMessage.questionId, 
-					gameMessage.answer
+					gameMessage.questionId as string, 
+					gameMessage.answer as string
 				);
 				break;
 			}

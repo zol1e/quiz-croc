@@ -1,5 +1,5 @@
+import { GameMessage } from '~/common/game-message';
 import { GameMessageHandler } from './game-message-handler';
-import { GameMessage } from '../common/model';
 import { WebSocketGameEventListener } from './game-event-listener';
 import { Router } from 'websocket-express';
 
