@@ -70,6 +70,10 @@ export default function Game() {
     const [secondsLeft, setSecondsLeft] = useState(0);
     const { gameEvent, previousGameEvent, readyState, sendMessage } = useGameWsClient()
 
+    const showNextQuestionButton = isMasterPlayer && 
+        gameEvent?.gameState !== GameState.QUESTION && 
+        gameEvent?.gameState !== GameState.FINISH;
+
     useEffect(() => {
         if (readyState === ReadyState.OPEN) {
             const gameMessage = new GameMessage(GameMessageType.JOIN, playerId, gameId);
@@ -118,11 +122,7 @@ export default function Game() {
         </div>
 
         {
-        (
-            isMasterPlayer && 
-            gameEvent?.gameState !== GameState.QUESTION && 
-            gameEvent?.gameState !== GameState.FINISH
-        ) &&
+        showNextQuestionButton &&
         <button className="button" onClick={onNextQuestionClicked} disabled={readyState !== ReadyState.OPEN}>
             Next question
         </button>
