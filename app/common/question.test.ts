@@ -5,7 +5,7 @@ import { Question } from './question';
 describe('question', () => {
     it('tip question test', () => {
       const tipQuestion = new Question(
-        "1", "Test tip question text?", "https://test source url.org", "5", []
+        "1", "Test tip question text?", "https://test-source-url.org", "5", []
       );
       let score = tipQuestion.getScore();
       expect(score).toStrictEqual({});
