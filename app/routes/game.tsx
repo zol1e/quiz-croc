@@ -3,11 +3,10 @@ import { useLoaderData } from "@remix-run/react";
 import { useCallback, useEffect, useState } from "react";
 import { ReadyState } from "react-use-websocket";
 
-import { useGameWsClient } from "~/hooks/game-ws-client";
-import { getSession } from "~/sessions";
+import { useGameWsClient } from "~/hooks/useGameWsClient";
+import { commitSession, getSession } from "~/sessions";
 
 import { Games } from "~/.server/games";
-import { QuestionGenerator } from "~/.server/question-generator";
 
 import AnswerInput from "~/components/answer-input";
 import AnswerList from "~/components/answer-list";
@@ -15,10 +14,7 @@ import Countdown from "~/components/countdown";
 import Scoreboard from "~/components/scoreboard";
 import { GameMessage, GameMessageType } from "~/common/game-message";
 import { GameState } from "~/common/game-event";
-
-
-const apiKey = process.env.REMIX_API_KEY ?? (() => { throw new Error("Missing REMIX_API_KEY"); })();
-const questionGenerator = new QuestionGenerator(apiKey);
+import { QuestionGenerator } from "~/.server/question-generator";
 
 
 export type LoaderData = {
@@ -27,7 +23,7 @@ export type LoaderData = {
     create: boolean;
 };
 
-export async function loader({request, }: LoaderFunctionArgs): Promise<LoaderData> {
+export async function loader({request, }: LoaderFunctionArgs): Promise<Response> {
     const session = await getSession(
         request.headers.get("Cookie")
     );
@@ -37,26 +33,39 @@ export async function loader({request, }: LoaderFunctionArgs): Promise<LoaderDat
 
     let game = null;
 
-    const create = session.get("create") as boolean;
-    if (create) {
-        // Create new game
-        const topic = session.get("topic") as string;
-        if (!topic) throw new Error("Topic is required!");
-
-        const generatedQuiz = await questionGenerator.generateQuestions(topic);
-        game = Games.get().createGame(generatedQuiz.quizName, generatedQuiz.questions);
-    } else {
+    const gameId = session.get("gameId");
+    if (gameId) {
         // Use existing Game ID
         const gameId = session.get("gameId") as string;
         if (!gameId) throw new Error("Game ID is required!");
 
         if (!Games.get().hasGame(gameId)) throw new Error("Game not found!");
         game = Games.get().getGame(gameId);
+    } else {
+        // Create new game
+        const topic = session.get("topic") as string;
+        if (!topic) throw new Error("Topic is required!");
+        
+        const apiKey = process.env.AI_API_KEY ?? (() => { throw new Error("Missing AI_API_KEY"); })();
+        const questionGenerator = new QuestionGenerator(apiKey);
+        const generatedQuiz = await questionGenerator.generateQuestions(topic);
+        game = Games.get().createGame(generatedQuiz.quizName, generatedQuiz.questions);
+        session.set("gameId", game.id)
     }
 
-    return { 
-        "playerId": playerId, "gameId": game.id, "create": create ? true : false 
+    const responseBody = {
+        playerId,
+        gameId: game.id,
+        create: session.get("create") === true,
     };
+
+    // Return the response with a proper 'Set-Cookie' header.
+    return new Response(JSON.stringify(responseBody), {
+        headers: {
+            "Content-Type": "application/json",
+            "Set-Cookie": await commitSession(session),
+        },
+    });
 }
 
 

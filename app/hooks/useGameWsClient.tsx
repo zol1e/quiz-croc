@@ -6,8 +6,16 @@ import { GameEvent } from "~/common/game-event";
 export function useGameWsClient() {
     const [gameEvent, setGameEvent] = useState<GameEvent | null>(null);
     const [previousGameEvent, setPreviousGameEvent] = useState<GameEvent | null>(null);
+    const [socketUrl, setSocketUrl] = useState<string | null>(null);
 
-    const socketUrl = document.location.origin.toString().replace('http://', 'ws://').replace('https://', 'wss://') + "/game-ws";
+    // Set socket URL only on the client
+    useEffect(() => {
+      if (typeof window !== "undefined") {
+        const wsUrl = window.location.origin.replace('http://', 'ws://').replace('https://', 'wss://') + "/game-ws";
+        setSocketUrl(wsUrl);
+      }
+    }, []);
+
     const { sendMessage, readyState, lastMessage } = useWebSocket(socketUrl);
 
     useEffect(() => {

@@ -1,6 +1,6 @@
-# Welcome to Remix!
+# Quiz-croc AI quiz application
 
-- 📖 [Remix docs](https://remix.run/docs)
+
 
 ## Development
 
@@ -24,17 +24,16 @@ Then run the app in production mode:
 npm start
 ```
 
-Now you'll need to pick a host to deploy it to.
+## Docker build and run
 
-### DIY
+Docker image build:
 
-If you're familiar with deploying Node applications, the built-in Remix app server is production-ready.
+```sh
+docker build -f Dockerfile -t quizcroc:latest .
+```
 
-Make sure to deploy the output of `npm run build`
+Docker run:
 
-- `build/server`
-- `build/client`
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever css framework you prefer. See the [Vite docs on css](https://vitejs.dev/guide/features.html#css) for more information.
+```sh
+docker run -p 5000:5000 -e AI_API_KEY=<Your Gemini AI API KEY> quizcroc:latest
+```

@@ -17,21 +17,6 @@ export class QuestionGenerator {
 	}
 
     public async generateQuestions(topic: string): Promise<GeneratedQuiz> {
-        // const prompt = [
-        //     "Mondj 2 olyan kérdést, aminek a válasza egy pozitív egész szám ",
-        //     " és 3 olyan kérdést, aminél 4 alternatív választási lehetőség közül csak az egyik a helyes (korrekt) válasz.",
-        //     " Tehát a helyes válas mellé generálj 3 rossz választ is.",
-        //     "A kérdések témája legyen:",
-        //     topic,
-        //     "Például", example, ".",
-        //     "Az eredmény legyen json formátumban. ",
-        //     " Az alternativeAnswers legyenek vesszővel elválasztva, szövegesen a lehetséges válaszok.",
-        //     " A 4 lehetséges válasz tartalmazza a helyes választ is.",
-        //     " A 2 pozitív egész szám válaszú kérdés esetén legyen üres az alternativeAnswers mező.",
-        //     " A correctAnswer mezőben minden esetben a helyes válasz legyen.",
-        //     " A text mező legyen a kérdés szövege."
-        //   ].join(" ");
-
         const prompt = [
             "Give two questions, which answer is a positive integer",
             " and three questions, which has 4 alternatives and only the one of them is the correct answer.",
@@ -118,7 +103,7 @@ export class QuestionGenerator {
         };
 
         return {
-            model: "gemini-2.5-flash-preview-04-17",
+            model: "gemini-2.5-flash-preview-05-20",
             contents: contents,
             config: {
                 responseMimeType: "application/json",

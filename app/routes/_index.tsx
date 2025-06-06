@@ -8,7 +8,7 @@ import { Games } from "~/.server/games";
 export const meta: MetaFunction = () => {
   return [
     { title: "Quizcroc" },
-    { name: "Quizcroc", content: "Quizcroc" },
+    { name: "Quizcroc", content: "Quizcroc", version: "1.0.0" },
   ];
 };
 
@@ -88,7 +88,7 @@ export default function Index() {
 
       <div>Quiz topic {actionData?.errors?.topic ? " - " + actionData?.errors?.topic : ""}
       <input name="topic" type="text" autoCorrect="off" autoCapitalize="off" 
-      placeholder="Friends series, quantum physics etc."
+      placeholder="Friends series, quantum physics etc. You can write a longer description of the topic."
 
       value={topic}
       onChange={(e) => {
