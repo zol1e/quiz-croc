@@ -1,7 +1,5 @@
 # Quiz-croc AI quiz application
 
-
-
 ## Development
 
 Run the dev server:
@@ -35,5 +33,5 @@ docker build -f Dockerfile -t quizcroc:latest .
 Docker run:
 
 ```sh
-docker run -p 5000:5000 -e AI_API_KEY=<Your Gemini AI API KEY> quizcroc:latest
+docker run -p 3000:3000 -e AI_API_KEY=<Your Gemini AI API KEY> quizcroc:latest
 ```
